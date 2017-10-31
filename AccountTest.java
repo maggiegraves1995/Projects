@@ -2,17 +2,20 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AccountTest {
-	ArrayList<Account> accts = new ArrayList<Account>();
-	ArrayList<Customer> customers = new ArrayList<Customer>();
+	ArrayList<Account> accountList;
+	ArrayList<Customer> customerList;
 	
 	public static void main(String[] args) {
 		
 		Scanner input = new Scanner(System.in);	
-		
+		Customer owner;
+		Account acct; 
 		int transactionCode;
        		int num_Of_Acct; //number of accounts
 		System.out.println("enter number of accounts");
 		num_Of_Acct = input.nextInt();
+		accountList = new ArrayList<>(num_Of_Acct);
+		customerList = new ArrayList<>(num_Of_Acct);
 		
 		for (int counter = 0; counter < num_Of_Acct; counter++) {
 			//prompt to enter first name, last name, , account number, 
@@ -21,13 +24,13 @@ public class AccountTest {
 					+ "credit limit, and beg balance %n ", i);	
 			String firstName = input.next(); 
 			String lastName = input.next();
-			customers.add(new Customer(firstName, lastName);
+			owner = new Customer(firstName, lastName);
+			customerList.add(owner);
 			int accountNumber = input.nextInt();
+			acct = new Account(accountNumber, owner);
 			double creditLimit = input.nextDouble();
 			double balance = input.nextDouble();			
-			
-			accts.add(new Account (accountNumber);
-					
+			accountList.add(acct);		
 			accts.setBegBalance(balance);			
 			accts.setCreditLimit(creditLimit);
 			
@@ -64,12 +67,7 @@ public class AccountTest {
 		for (Account anAccount: accts)
 		{			  
 		
-			System.out.printf("Name: %s %s\n Account number: %d \nCredit limit: %.2f%n"
-		            + " Beginning Balance: %.2f   Ending Balance: %.2f\n Number of "
-					+ "purchases: %d\nNumber of transactions: %d\n Total Purchase Ammount: %.2f" 
-		            + "  Total Payment Amount: %.2f  Total Penalty: %.2f \n\n", 
-					anAccount.getOwner(), anAccount.getAccountNumber(), anAccount.getCreditLimit(), anAccount.getBegBalance(), 
-					anAccount.getEndBalance(), anAccount.getPurchases(), anAccount.getTransactions(), anAccount.getTotPurchaseAmount(),anAccount.getTotPayment(), anAccount.getTotPenalty();
+			
 		}
 			
 	}//end of main method	
