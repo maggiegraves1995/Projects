@@ -105,7 +105,7 @@ public class Account {
 	    {
 	    	this.owner = customer;
 	    }
-		public Customer getOwner()
+	    public Customer getOwner()
 		{
 			return this.owner;
 		}
