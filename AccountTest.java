@@ -1,114 +1,87 @@
-public class Account {
-	//Project#1 -  Fall 2017
-		//instance variables
-		//private String firstName, lastName; 
-		private int accountNumber; 
-		private double begBalance, creditLimit;
-		private double endBalance; 
-		
-		private int purchases;//number of purchases
-		private int payments; // number of payment transactions (code 2)
-		private int transactions;//number of transactions, includes denied ones
-		private double totPurchaseAmount;//counter for total purchase amount
-		                                 // does not include denied ones
-		private double totPayment;//counter for total payment
-		                                  // does not include denied ones
-		
-		private final double penalty = 20; //holds penalty value = $20 for overdrawings
-		private double totPenalty;
-		private Customer owner;
-		
-		public Account(int accountNumber) 
-		{
-			this.accountNumber = accountNumber;
-		}
-		
-		//method sets beginning balance
-		public void setBegBalance(double begBalance) 
-		{      
-		    this.begBalance = begBalance; // add it to the balance 
-		    
-		    //sets endBalance equal to begBalance
-		    this.endBalance = begBalance;
-		}
-		
-		//method sets credit limit
-		public void setCreditLimit (double creditLimit) 
-		{
-			this.creditLimit = creditLimit;
-		}
-		
-		//process purchase transactions
-		public void processTransaction (double purchaseAmount, double payment)
-		{
-			transactions++;
-			// tentative endbalance
-			double tentEndBal = endBalance - purchaseAmount + payment;
-			if (tentEndBal >= - creditLimit)  {
-			
-				//purchase transaction accepted
-			   totPurchaseAmount += purchaseAmount;
-			   totPayment += payment;
-			   //adjust end balance
-			   endBalance = tentEndBal;
-			   purchases++;
-			}
-			
-			else if (endBalance < creditLimit) {
-				//purchase transaction denied
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class AccountTest {
+	ArrayList<Account> accts = new ArrayList<Account>();
+	ArrayList<Customer> customers = new ArrayList<Customer>();
 	
-				//let client know that credit limit has been exceeded
-				System.out.printf("Credit limit has been exceeded for transaction # %d\n"
-						+ "A $20 penalty has been charged to your account.", transactions);
-				
-				//apply $20 penalty
-				endBalance -= penalty;
-				totPenalty += penalty;
-			}
-				
+	public static void main(String[] args) {
+		
+		Scanner input = new Scanner(System.in);	
+		
+		int transactionCode;
+        int num_Of_Acct; //number of accounts
+		Account acct, acct1 = null, acct2 = null, acct3 = null, acct4 = null, acct5 = null;
+		System.out.println("enter number of accounts");
+		num_Of_Acct = input.nextInt();
+		
+		for (int i=1; i<=num_Of_Acct; i++) {
+			//prompt to enter first name, last name, , account number, 
+			//credit limit, and beg balance
+			System.out.printf("%n%nFor account %d, enter: first name, last name, account number, "
+					+ "credit limit, and beg balance %n ", i);	
+			String firstName = input.next(); 
+			String lastName = input.next();
+			int accountNumber = input.nextInt();
+			double creditLimit = input.nextDouble();
+			double balance = input.nextDouble();			
 			
-		}
-		
-		//method that performs transaction 1 calculations
-		public void processTransaction (double payment)
-		{
-			//adjust end balance
-			endBalance += payment;
-			totPayment += payment;
-			transactions++;
-		}
-		
-		// print summary for account
-		public void printStatement () 
-		{
-			System.out.printf("Name: %s %s\n Account number: %d \nCredit limit: %.2f%n"
-		            + " Beginning Balance: %.2f   Ending Balance: %.2f\n Number of "
-					+ "purchases: %d\nNumber of transactions: %d\n Total Purchase Ammount: %.2f" 
-		            + "  Total Payment Amount: %.2f  Total Penalty: %.2f \n\n", 
-					owner, accountNumber, creditLimit, begBalance, 
-					endBalance, purchases, transactions, totPurchaseAmount,totPayment, totPenalty);
-		}
+			acct = new Account (firstName, lastName, accountNumber);
+					
+			acct.setBegBalance(balance);			
+			acct.setCreditLimit(creditLimit);
 			
+			//prompt for all transactions for current account
+			System.out.println();
+			System.out.print("enter all transactions for account ");
+			transactionCode = input.nextInt();
+			
+			//read transaction and process the transactions
+			while (transactionCode != 0) {
+				// purchase - input cost and payment and process
+				if (transactionCode == 1) {					
+					double costOfPurchase = input.nextDouble();					
+					double payment = input.nextDouble();
+					acct.processTransaction(costOfPurchase, payment);
+					
+					//
+				}
+				// payment only.  input amount and process
+				else if (transactionCode == 2) {
+					double payment = input.nextDouble();
+					acct.processTransaction(payment);
+				}
+				// input next transaction code
+				transactionCode = input.nextInt();
+			}//end of while loop
+				
+			//assign the values of the reference variable "acct" to the 
+			//appropriate account objects
+			if (i==1)
+				acct1 = acct;
+			else if (i==2)
+				acct2 = acct;
+			else if (i==3)
+				acct3 = acct;
+			else if (i==4)
+				acct4 = acct;
+			else if (i==5)
+				acct5 = acct;
 		
-		//method returns beginning balance
-		public double getBegBalance() 
-		{
-		    return begBalance; 
-		} 	
+			System.out.println();
+				
+		}//end of for loop
+		
+		//display an information summary for each account object
+		System.out.println("\n\n ****************************************************"
+				+ "\nSummary of the accounts \n");
+		
+		acct1.printStatement();
+		acct2.printStatement();
+		acct3.printStatement();
+		acct4.printStatement();
+		acct5.printStatement();
+		
+	}//end of main method	
+}// end of class AccountTest
 
-		// method returns credit limit
-	    public double getCreditLimit () 
-	    {
-		    return creditLimit; 
-		} 
-	    public void setOwner(Customer customer)
-	    {
-	    	this.owner = customer;
-	    }
-		public Customer getOwner()
-		{
-			return this.owner;
-		}
-
-
-}  // end class Account  
